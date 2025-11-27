@@ -1,5 +1,5 @@
 import { s as __toESM } from "./rolldown-runtime-waC_Q_pm.js";
-import { it as require_core, nt as require_dist_cjs, rt as require_dist_cjs$1 } from "./vendor-DzqDatWw.js";
+import { it as require_core, nt as require_dist_cjs, rt as require_dist_cjs$1 } from "./vendor-BuSz5DiD.js";
 
 //#region src/main.ts
 var import_core = /* @__PURE__ */ __toESM(require_core(), 1);

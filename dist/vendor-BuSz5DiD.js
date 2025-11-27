@@ -21201,7 +21201,7 @@ var init_HttpProtocol = __esmMin((() => {
 			});
 		}
 		async loadEventStreamCapability() {
-			const { EventStreamSerde: EventStreamSerde$1 } = await import("./event-streams-Dgq4MyhL.js");
+			const { EventStreamSerde: EventStreamSerde$1 } = await import("./event-streams-DI-Lwdwp.js");
 			return new EventStreamSerde$1({
 				marshaller: this.getEventStreamMarshaller(),
 				serializer: this.serializer,
@@ -24150,7 +24150,6 @@ var init_cbor$1 = __esmMin((() => {
 //#region node_modules/@smithy/core/dist-es/submodules/cbor/parseCborBody.js
 var dateToTag, loadSmithyRpcV2CborErrorCode;
 var init_parseCborBody = __esmMin((() => {
-	init_protocols$1();
 	init_cbor_types();
 	dateToTag = (date$1) => {
 		return tag({
@@ -29450,10 +29449,10 @@ var require_dist_cjs$15 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var sharedIniFileLoader$5 = require_dist_cjs$22();
 	const ENV_IMDS_DISABLED$1 = "AWS_EC2_METADATA_DISABLED";
 	const remoteProvider = async (init) => {
-		const { ENV_CMDS_FULL_URI: ENV_CMDS_FULL_URI$1, ENV_CMDS_RELATIVE_URI: ENV_CMDS_RELATIVE_URI$1, fromContainerMetadata: fromContainerMetadata$1, fromInstanceMetadata: fromInstanceMetadata$1 } = await import("./dist-cjs-C7rSq7e4.js").then(__toDynamicImportESM());
+		const { ENV_CMDS_FULL_URI: ENV_CMDS_FULL_URI$1, ENV_CMDS_RELATIVE_URI: ENV_CMDS_RELATIVE_URI$1, fromContainerMetadata: fromContainerMetadata$1, fromInstanceMetadata: fromInstanceMetadata$1 } = await import("./dist-cjs-C4UyYwEg.js").then(__toDynamicImportESM());
 		if (process.env[ENV_CMDS_RELATIVE_URI$1] || process.env[ENV_CMDS_FULL_URI$1]) {
 			init.logger?.debug("@aws-sdk/credential-provider-node - remoteProvider::fromHttp/fromContainerMetadata");
-			const { fromHttp: fromHttp$1 } = await import("./dist-cjs-CAYs523S.js").then(__toDynamicImportESM());
+			const { fromHttp: fromHttp$1 } = await import("./dist-cjs-BNytX07p.js").then(__toDynamicImportESM());
 			return propertyProvider$7.chain(fromHttp$1(init), fromContainerMetadata$1(init));
 		}
 		if (process.env[ENV_IMDS_DISABLED$1] && process.env[ENV_IMDS_DISABLED$1] !== "false") return async () => {
@@ -29530,22 +29529,22 @@ var require_dist_cjs$15 = /* @__PURE__ */ __commonJSMin(((exports) => {
 			init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromSSO");
 			const { ssoStartUrl, ssoAccountId, ssoRegion, ssoRoleName, ssoSession } = init;
 			if (!ssoStartUrl && !ssoAccountId && !ssoRegion && !ssoRoleName && !ssoSession) throw new propertyProvider$7.CredentialsProviderError("Skipping SSO provider in default chain (inputs do not include SSO fields).", { logger: init.logger });
-			const { fromSSO: fromSSO$1 } = await import("./dist-cjs-B-aR1-8U.js").then(__toDynamicImportESM());
+			const { fromSSO: fromSSO$1 } = await import("./dist-cjs-0bEl5-F3.js").then(__toDynamicImportESM());
 			return fromSSO$1(init)(awsIdentityProperties);
 		},
 		async (awsIdentityProperties) => {
 			init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromIni");
-			const { fromIni: fromIni$1 } = await import("./dist-cjs-D1OAWGFD.js").then(__toDynamicImportESM());
+			const { fromIni: fromIni$1 } = await import("./dist-cjs-C4oKlZrG.js").then(__toDynamicImportESM());
 			return fromIni$1(init)(awsIdentityProperties);
 		},
 		async (awsIdentityProperties) => {
 			init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromProcess");
-			const { fromProcess: fromProcess$1 } = await import("./dist-cjs-DfSXziVD.js").then(__toDynamicImportESM());
+			const { fromProcess: fromProcess$1 } = await import("./dist-cjs-Be1uTUCL.js").then(__toDynamicImportESM());
 			return fromProcess$1(init)(awsIdentityProperties);
 		},
 		async (awsIdentityProperties) => {
 			init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromTokenFile");
-			const { fromTokenFile: fromTokenFile$2 } = await import("./dist-cjs-MwJhby-q.js").then(__toDynamicImportESM());
+			const { fromTokenFile: fromTokenFile$2 } = await import("./dist-cjs-CG2867ff.js").then(__toDynamicImportESM());
 			return fromTokenFile$2(init)(awsIdentityProperties);
 		},
 		async () => {
@@ -30004,7 +30003,7 @@ var require_dist_cjs$11 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	const inferPhysicalRegion = async () => {
 		if (process.env[AWS_EXECUTION_ENV] && (process.env[AWS_REGION_ENV] || process.env[AWS_DEFAULT_REGION_ENV])) return process.env[AWS_REGION_ENV] ?? process.env[AWS_DEFAULT_REGION_ENV];
 		if (!process.env[ENV_IMDS_DISABLED]) try {
-			const { getInstanceMetadataEndpoint: getInstanceMetadataEndpoint$1, httpRequest: httpRequest$1 } = await import("./dist-cjs-C7rSq7e4.js").then(__toDynamicImportESM());
+			const { getInstanceMetadataEndpoint: getInstanceMetadataEndpoint$1, httpRequest: httpRequest$1 } = await import("./dist-cjs-C4UyYwEg.js").then(__toDynamicImportESM());
 			return (await httpRequest$1({
 				...await getInstanceMetadataEndpoint$1(),
 				path: IMDS_REGION_PATH
@@ -32214,7 +32213,7 @@ var require_dist_cjs$7 = /* @__PURE__ */ __commonJSMin(((exports) => {
 			return this.profileData.login_session;
 		}
 		async refresh(token) {
-			const { SigninClient: SigninClient$1, CreateOAuth2TokenCommand: CreateOAuth2TokenCommand$1 } = await import("./signin-Dd7liXdh.js");
+			const { SigninClient: SigninClient$1, CreateOAuth2TokenCommand: CreateOAuth2TokenCommand$1 } = await import("./signin-DWKKrGDA.js");
 			const { logger: logger$1, userAgentAppId } = this.callerClientConfig ?? {};
 			const isH2$1 = (requestHandler$1) => {
 				return requestHandler$1?.metadata?.handlerProtocol === "h2";
@@ -32440,19 +32439,19 @@ var require_dist_cjs$6 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	const resolveCredentialSource = (credentialSource, profileName, logger$1) => {
 		const sourceProvidersMap = {
 			EcsContainer: async (options) => {
-				const { fromHttp: fromHttp$1 } = await import("./dist-cjs-CAYs523S.js").then(__toDynamicImportESM());
-				const { fromContainerMetadata: fromContainerMetadata$1 } = await import("./dist-cjs-C7rSq7e4.js").then(__toDynamicImportESM());
+				const { fromHttp: fromHttp$1 } = await import("./dist-cjs-BNytX07p.js").then(__toDynamicImportESM());
+				const { fromContainerMetadata: fromContainerMetadata$1 } = await import("./dist-cjs-C4UyYwEg.js").then(__toDynamicImportESM());
 				logger$1?.debug("@aws-sdk/credential-provider-ini - credential_source is EcsContainer");
 				return async () => propertyProvider$4.chain(fromHttp$1(options ?? {}), fromContainerMetadata$1(options))().then(setNamedProvider);
 			},
 			Ec2InstanceMetadata: async (options) => {
 				logger$1?.debug("@aws-sdk/credential-provider-ini - credential_source is Ec2InstanceMetadata");
-				const { fromInstanceMetadata: fromInstanceMetadata$1 } = await import("./dist-cjs-C7rSq7e4.js").then(__toDynamicImportESM());
+				const { fromInstanceMetadata: fromInstanceMetadata$1 } = await import("./dist-cjs-C4UyYwEg.js").then(__toDynamicImportESM());
 				return async () => fromInstanceMetadata$1(options)().then(setNamedProvider);
 			},
 			Environment: async (options) => {
 				logger$1?.debug("@aws-sdk/credential-provider-ini - credential_source is Environment");
-				const { fromEnv: fromEnv$2 } = await import("./dist-cjs-hBwVTnru.js").then(__toDynamicImportESM());
+				const { fromEnv: fromEnv$2 } = await import("./dist-cjs-B9mYzGBm.js").then(__toDynamicImportESM());
 				return async () => fromEnv$2(options)().then(setNamedProvider);
 			}
 		};
@@ -32484,7 +32483,7 @@ var require_dist_cjs$6 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		const profileData = profiles[profileName];
 		const { source_profile, region } = profileData;
 		if (!options.roleAssumer) {
-			const { getDefaultRoleAssumer: getDefaultRoleAssumer$2 } = await import("./sts-CzMGhKw5.js");
+			const { getDefaultRoleAssumer: getDefaultRoleAssumer$2 } = await import("./sts-CurRewBK.js");
 			options.roleAssumer = getDefaultRoleAssumer$2({
 				...options.clientConfig,
 				credentialProviderLogger: options.logger,
@@ -32535,12 +32534,12 @@ var require_dist_cjs$6 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return client$3.setCredentialFeature(credentials, "CREDENTIALS_PROFILE_LOGIN", "AC");
 	};
 	const isProcessProfile = (arg) => Boolean(arg) && typeof arg === "object" && typeof arg.credential_process === "string";
-	const resolveProcessCredentials$1 = async (options, profile) => import("./dist-cjs-DfSXziVD.js").then(__toDynamicImportESM()).then(({ fromProcess: fromProcess$1 }) => fromProcess$1({
+	const resolveProcessCredentials$1 = async (options, profile) => import("./dist-cjs-Be1uTUCL.js").then(__toDynamicImportESM()).then(({ fromProcess: fromProcess$1 }) => fromProcess$1({
 		...options,
 		profile
 	})().then((creds) => client$3.setCredentialFeature(creds, "CREDENTIALS_PROFILE_PROCESS", "v")));
 	const resolveSsoCredentials = async (profile, profileData, options = {}) => {
-		const { fromSSO: fromSSO$1 } = await import("./dist-cjs-B-aR1-8U.js").then(__toDynamicImportESM());
+		const { fromSSO: fromSSO$1 } = await import("./dist-cjs-0bEl5-F3.js").then(__toDynamicImportESM());
 		return fromSSO$1({
 			profile,
 			logger: options.logger,
@@ -32565,7 +32564,7 @@ var require_dist_cjs$6 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return client$3.setCredentialFeature(credentials, "CREDENTIALS_PROFILE", "n");
 	};
 	const isWebIdentityProfile = (arg) => Boolean(arg) && typeof arg === "object" && typeof arg.web_identity_token_file === "string" && typeof arg.role_arn === "string" && ["undefined", "string"].indexOf(typeof arg.role_session_name) > -1;
-	const resolveWebIdentityCredentials = async (profile, options) => import("./dist-cjs-MwJhby-q.js").then(__toDynamicImportESM()).then(({ fromTokenFile: fromTokenFile$2 }) => fromTokenFile$2({
+	const resolveWebIdentityCredentials = async (profile, options) => import("./dist-cjs-CG2867ff.js").then(__toDynamicImportESM()).then(({ fromTokenFile: fromTokenFile$2 }) => fromTokenFile$2({
 		webIdentityTokenFile: profile.web_identity_token_file,
 		roleArn: profile.role_arn,
 		roleSessionName: profile.role_session_name,
@@ -32679,7 +32678,7 @@ var require_dist_cjs$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	const EXPIRE_WINDOW_MS = 300 * 1e3;
 	const REFRESH_MESSAGE = `To refresh this SSO session run 'aws sso login' with the corresponding profile.`;
 	const getSsoOidcClient = async (ssoRegion, init = {}) => {
-		const { SSOOIDCClient: SSOOIDCClient$1 } = await import("./sso-oidc-BRhoKMsN.js");
+		const { SSOOIDCClient: SSOOIDCClient$1 } = await import("./sso-oidc-BTVZZ3Kx.js");
 		const coalesce = (prop) => init.clientConfig?.[prop] ?? init.parentClientConfig?.[prop];
 		return new SSOOIDCClient$1(Object.assign({}, init.clientConfig ?? {}, {
 			region: ssoRegion ?? init.clientConfig?.region,
@@ -32688,7 +32687,7 @@ var require_dist_cjs$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}));
 	};
 	const getNewSsoOidcToken = async (ssoToken, ssoRegion, init = {}) => {
-		const { CreateTokenCommand: CreateTokenCommand$1 } = await import("./sso-oidc-BRhoKMsN.js");
+		const { CreateTokenCommand: CreateTokenCommand$1 } = await import("./sso-oidc-BTVZZ3Kx.js");
 		return (await getSsoOidcClient(ssoRegion, init)).send(new CreateTokenCommand$1({
 			clientId: ssoToken.clientId,
 			clientSecret: ssoToken.clientSecret,
