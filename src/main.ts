@@ -6,7 +6,7 @@ import {
 import { fromEnv } from "@aws-sdk/credential-provider-env";
 
 export async function run(): Promise<void> {
-	const secretName = core.getInput("secret-name", {
+	const secretName = core.getInput("secret_name", {
 		required: true,
 		trimWhitespace: true,
 	});
