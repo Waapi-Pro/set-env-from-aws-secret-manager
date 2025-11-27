@@ -1,0 +1,30 @@
+name: Set environment variables from AWS Secrets Manager
+description: Allows you to set environment variables from AWS Secrets Manager
+author: youri.pailloux@waalaxy.com
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: heart
+  color: red
+
+# Define your inputs here.
+inputs:
+  secret_name:
+    description: The name of the secret in AWS Secrets Manager
+    required: true
+  region:
+    description: The AWS region
+    required: true
+    default: eu-west-1
+  profile:
+    description: The AWS profile
+    required: false
+
+# Define your outputs here.
+outputs:
+  env:
+    description: The environment variables
+
+runs:
+  using: node24
+  main: dist/index.js
