@@ -1,0 +1,4 @@
+import { B as AssumeRoleCommand, F as decorateDefaultCredentialProvider, G as InvalidIdentityTokenException, H as ExpiredTokenException, I as getDefaultRoleAssumer, J as RegionDisabledException, K as MalformedPolicyDocumentException, L as getDefaultRoleAssumerWithWebIdentity, P as init_sts, R as STS, U as IDPCommunicationErrorException, V as import_dist_cjs$1, W as IDPRejectedClaimException, X as STSClient, Y as STSServiceException, Z as import_dist_cjs, q as PackedPolicyTooLargeException, z as AssumeRoleWithWebIdentityCommand } from "./vendor-DzqDatWw.js";
+
+init_sts();
+export { getDefaultRoleAssumer };
