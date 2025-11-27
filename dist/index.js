@@ -6,7 +6,7 @@ var import_core = /* @__PURE__ */ __toESM(require_core(), 1);
 var import_dist_cjs = require_dist_cjs();
 var import_dist_cjs$1 = require_dist_cjs$1();
 async function run() {
-	const secretName = import_core.getInput("secret-name", {
+	const secretName = import_core.getInput("secret_name", {
 		required: true,
 		trimWhitespace: true
 	});
