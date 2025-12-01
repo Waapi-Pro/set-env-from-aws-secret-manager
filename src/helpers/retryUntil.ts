@@ -14,12 +14,14 @@ export async function retryUntil<Fn extends () => any>(params: {
 	let remainingRetries = maxRetries;
 	let nextDelay = initialDelay;
 
+	let lastError: unknown;
 	do {
 		try {
 			return await fn();
 		} catch (error) {
+			lastError = error;
 			if (remainingRetries === 0) {
-				throw error;
+				throw lastError;
 			}
 			await setTimeout(nextDelay);
 
@@ -28,6 +30,5 @@ export async function retryUntil<Fn extends () => any>(params: {
 		}
 	} while (remainingRetries > 0);
 
-	// this should never happen
-	throw new Error("RetryUntil: No retries left");
+	throw lastError;
 }
