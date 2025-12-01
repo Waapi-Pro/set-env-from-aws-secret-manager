@@ -25,6 +25,7 @@ inputs:
   github_token_audience:
     description: The GitHub token audience
     required: false
+    default: sts.amazonaws.com
 
 # Define your outputs here.
 outputs:
