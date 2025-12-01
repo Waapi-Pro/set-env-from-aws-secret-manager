@@ -39,7 +39,7 @@ async function getWebIdentityToken(params) {
 	try {
 		import_core$2.info(`Getting web identity token for audience: ${audience}`);
 		const webIdentityToken = await retryUntil({ fn: async () => {
-			return await import_core$2.getIDToken(audience);
+			return await import_core$2.getIDToken(audience ? audience : void 0);
 		} });
 		import_core$2.info(`Got web identity token: ${webIdentityToken}`);
 		if (!webIdentityToken) return {
@@ -61,36 +61,11 @@ async function getWebIdentityToken(params) {
 }
 
 //#endregion
-//#region src/helpers/getGithubEnvironment.ts
-var import_dist_cjs$1 = require_dist_cjs();
-const MAX_TAG_VALUE_LENGTH = 256;
-const SANITIZATION_CHARACTER = "_";
-function sanitizeGitHubVariables(name) {
-	return name.replace(/[^\p{L}\p{Z}\p{N}_.:/=+\-@]/gu, SANITIZATION_CHARACTER).slice(0, MAX_TAG_VALUE_LENGTH);
-}
-function getGithubEnvironment() {
-	const { GITHUB_REPOSITORY, GITHUB_WORKFLOW, GITHUB_ACTION, GITHUB_ACTOR, GITHUB_SHA, GITHUB_WORKSPACE, GITHUB_REF } = process.env;
-	if (!GITHUB_REPOSITORY) throw new Error("GITHUB_REPOSITORY is not set");
-	if (!GITHUB_WORKFLOW) throw new Error("GITHUB_WORKFLOW is not set");
-	if (!GITHUB_ACTION) throw new Error("GITHUB_ACTION is not set");
-	if (!GITHUB_ACTOR) throw new Error("GITHUB_ACTOR is not set");
-	if (!GITHUB_SHA) throw new Error("GITHUB_SHA is not set");
-	if (!GITHUB_WORKSPACE) throw new Error("GITHUB_WORKSPACE is not set");
-	return {
-		repository: GITHUB_REPOSITORY,
-		workflow: sanitizeGitHubVariables(GITHUB_WORKFLOW),
-		action: GITHUB_ACTION,
-		actor: GITHUB_ACTOR,
-		sha: GITHUB_SHA,
-		workspace: sanitizeGitHubVariables(GITHUB_WORKSPACE),
-		ref: GITHUB_REF ? sanitizeGitHubVariables(GITHUB_REF) : void 0
-	};
-}
-
-//#endregion
 //#region src/oidcClient.ts
 var import_core$1 = /* @__PURE__ */ __toESM(require_core(), 1);
+var import_dist_cjs$1 = require_dist_cjs();
 const USER_AGENT = "github-actions/set-env-from-aws-secret-manager";
+const DEFAULT_ROLE_DURATION_SECONDS = 3600;
 const DEFAULT_ROLE_SESSION_NAME = "GitHubActions";
 function isRoleArn(roleArn) {
 	return roleArn.startsWith("arn:aws");
@@ -107,41 +82,10 @@ function getOidcClient(params) {
 		const { roleArn = initialRoleArn, webIdentityToken = initialWebIdentityToken } = params$1 ?? {};
 		import_core$1.info("Assuming role with OIDC");
 		try {
-			const githubEnvironment = getGithubEnvironment();
-			const tagArray = [
-				{
-					Key: "GitHub",
-					Value: "Actions"
-				},
-				{
-					Key: "Repository",
-					Value: githubEnvironment.repository
-				},
-				{
-					Key: "Workflow",
-					Value: githubEnvironment.workflow
-				},
-				{
-					Key: "Action",
-					Value: githubEnvironment.action
-				},
-				{
-					Key: "Actor",
-					Value: githubEnvironment.actor
-				},
-				{
-					Key: "Commit",
-					Value: githubEnvironment.sha
-				}
-			];
-			if (githubEnvironment.ref) tagArray.push({
-				Key: "Ref",
-				Value: githubEnvironment.ref
-			});
 			const commandInput = {
 				RoleArn: roleArn,
 				RoleSessionName: roleSessionName,
-				Tags: tagArray
+				DurationSeconds: DEFAULT_ROLE_DURATION_SECONDS
 			};
 			import_core$1.info(`Assuming role with OIDC:\n${JSON.stringify(commandInput, null, 2)}`);
 			const assumeRoleResponse = await stsClient.send(new import_dist_cjs$1.AssumeRoleWithWebIdentityCommand({
@@ -273,7 +217,11 @@ async function run() {
 		required: false,
 		trimWhitespace: true
 	});
-	const getWebIdentityTokenResponse = await getWebIdentityToken();
+	const githubTokenAudience = import_core.getInput("github_token_audience", {
+		required: false,
+		trimWhitespace: true
+	});
+	const getWebIdentityTokenResponse = await getWebIdentityToken(githubTokenAudience ? { audience: githubTokenAudience } : void 0);
 	if (getWebIdentityTokenResponse.hasFailed === true) {
 		import_core.setFailed(`Failed to get web identity token:\n[${getWebIdentityTokenResponse.errorCode}] ${getWebIdentityTokenResponse.errorMessage}`);
 		return;

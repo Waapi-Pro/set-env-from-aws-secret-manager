@@ -11,6 +11,7 @@ import { getGithubEnvironment } from "./helpers/getGithubEnvironment";
 import type { CustomResponse } from "./types/CustomResponse";
 
 const USER_AGENT = "github-actions/set-env-from-aws-secret-manager" as const;
+const DEFAULT_ROLE_DURATION_SECONDS = 3600 as const;
 const DEFAULT_ROLE_SESSION_NAME = "GitHubActions" as const;
 
 function isRoleArn(roleArn: string) {
@@ -56,22 +57,10 @@ export function getOidcClient(params: {
 		} = params ?? {};
 		core.info("Assuming role with OIDC");
 		try {
-			const githubEnvironment = getGithubEnvironment();
-			const tagArray: Tag[] = [
-				{ Key: "GitHub", Value: "Actions" },
-				{ Key: "Repository", Value: githubEnvironment.repository },
-				{ Key: "Workflow", Value: githubEnvironment.workflow },
-				{ Key: "Action", Value: githubEnvironment.action },
-				{ Key: "Actor", Value: githubEnvironment.actor },
-				{ Key: "Commit", Value: githubEnvironment.sha },
-			];
-			if (githubEnvironment.ref) {
-				tagArray.push({ Key: "Ref", Value: githubEnvironment.ref });
-			}
 			const commandInput: AssumeRoleCommandInput = {
 				RoleArn: roleArn,
 				RoleSessionName: roleSessionName,
-				Tags: tagArray,
+				DurationSeconds: DEFAULT_ROLE_DURATION_SECONDS,
 			};
 
 			core.info(
