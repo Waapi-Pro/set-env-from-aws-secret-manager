@@ -37,11 +37,11 @@ async function retryUntil(params) {
 async function getWebIdentityToken(params) {
 	const { audience } = params ?? {};
 	try {
-		import_core$2.debug(`Getting web identity token for audience: ${audience}`);
+		import_core$2.info(`Getting web identity token for audience: ${audience}`);
 		const webIdentityToken = await retryUntil({ fn: async () => {
 			return await import_core$2.getIDToken(audience);
 		} });
-		import_core$2.debug(`Got web identity token: ${webIdentityToken}`);
+		import_core$2.info(`Got web identity token: ${webIdentityToken}`);
 		if (!webIdentityToken) return {
 			hasFailed: true,
 			errorCode: "web_identity_token_is_empty",
@@ -143,7 +143,7 @@ function getOidcClient(params) {
 				RoleSessionName: roleSessionName,
 				Tags: tagArray
 			};
-			import_core$1.debug(`Assuming role with OIDC:\n${JSON.stringify(commandInput, null, 2)}`);
+			import_core$1.info(`Assuming role with OIDC:\n${JSON.stringify(commandInput, null, 2)}`);
 			const assumeRoleResponse = await stsClient.send(new import_dist_cjs$1.AssumeRoleWithWebIdentityCommand({
 				...commandInput,
 				WebIdentityToken: webIdentityToken
@@ -301,11 +301,11 @@ async function run() {
 	}
 	const { data: secretValue } = getSecretValueResponse;
 	for (const [key, value] of Object.entries(secretValue)) {
-		import_core.debug(`Setting ${key}`);
+		import_core.info(`Setting ${key}`);
 		import_core.exportVariable(key, value);
 		import_core.setSecret(value);
 	}
-	import_core.debug("Done");
+	import_core.info("Done");
 }
 
 //#endregion

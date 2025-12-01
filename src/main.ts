@@ -195,10 +195,10 @@ export async function run(): Promise<void> {
 
 	const { data: secretValue } = getSecretValueResponse;
 	for (const [key, value] of Object.entries(secretValue)) {
-		core.debug(`Setting ${key}`);
+		core.info(`Setting ${key}`);
 		core.exportVariable(key, value);
 		core.setSecret(value);
 	}
 
-	core.debug("Done");
+	core.info("Done");
 }

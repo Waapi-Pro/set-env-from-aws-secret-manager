@@ -9,13 +9,13 @@ export async function getWebIdentityToken(params?: {
 	const { audience } = params ?? {};
 
 	try {
-		core.debug(`Getting web identity token for audience: ${audience}`);
+		core.info(`Getting web identity token for audience: ${audience}`);
 		const webIdentityToken = await retryUntil({
 			fn: async () => {
 				return await core.getIDToken(audience);
 			},
 		});
-		core.debug(`Got web identity token: ${webIdentityToken}`);
+		core.info(`Got web identity token: ${webIdentityToken}`);
 
 		if (!webIdentityToken) {
 			return {
