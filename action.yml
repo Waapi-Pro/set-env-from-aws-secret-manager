@@ -22,6 +22,9 @@ inputs:
   aws_role_arn:
     description: The AWS role ARN
     required: true
+  github_token_audience:
+    description: The GitHub token audience
+    required: false
 
 # Define your outputs here.
 outputs:

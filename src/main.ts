@@ -157,8 +157,18 @@ export async function run(): Promise<void> {
 		required: false,
 		trimWhitespace: true,
 	});
+	const githubTokenAudience = core.getInput("github_token_audience", {
+		required: false,
+		trimWhitespace: true,
+	});
 
-	const getWebIdentityTokenResponse = await getWebIdentityToken();
+	const getWebIdentityTokenResponse = await getWebIdentityToken(
+		githubTokenAudience
+			? {
+					audience: githubTokenAudience,
+				}
+			: undefined,
+	);
 	if (getWebIdentityTokenResponse.hasFailed === true) {
 		core.setFailed(
 			`Failed to get web identity token:\n[${getWebIdentityTokenResponse.errorCode}] ${getWebIdentityTokenResponse.errorMessage}`,
