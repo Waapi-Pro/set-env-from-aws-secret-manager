@@ -15,6 +15,7 @@ export async function getWebIdentityToken(params?: {
 				return await core.getIDToken(audience);
 			},
 		});
+		core.debug(`Got web identity token: ${webIdentityToken}`);
 
 		if (!webIdentityToken) {
 			return {

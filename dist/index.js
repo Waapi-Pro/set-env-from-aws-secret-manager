@@ -15,11 +15,8 @@ function getErrorMessage(error) {
 //#endregion
 //#region src/helpers/retryUntil.ts
 async function retryUntil(params) {
-	const { fn, maxRetries = 3, backOff = {
-		initialDelay: 1e3,
-		maxDelay: 1e4
-	} } = params;
-	const { initialDelay, maxDelay } = backOff;
+	const { fn, maxRetries = 3, backOff } = params;
+	const { initialDelay = 1e3, maxDelay = 1e4 } = backOff ?? {};
 	let remainingRetries = maxRetries;
 	let nextDelay = initialDelay;
 	do
@@ -32,6 +29,7 @@ async function retryUntil(params) {
 			nextDelay = Math.min(nextDelay * 2, maxDelay);
 		}
 	while (remainingRetries > 0);
+	throw new Error("RetryUntil: No retries left");
 }
 
 //#endregion
@@ -39,11 +37,19 @@ async function retryUntil(params) {
 async function getWebIdentityToken(params) {
 	const { audience } = params ?? {};
 	try {
+		import_core$2.debug(`Getting web identity token for audience: ${audience}`);
+		const webIdentityToken = await retryUntil({ fn: async () => {
+			return await import_core$2.getIDToken(audience);
+		} });
+		import_core$2.debug(`Got web identity token: ${webIdentityToken}`);
+		if (!webIdentityToken) return {
+			hasFailed: true,
+			errorCode: "web_identity_token_is_empty",
+			errorMessage: `getIDToken call returned: ${webIdentityToken}`
+		};
 		return {
 			hasFailed: false,
-			data: await retryUntil({ fn: async () => {
-				return await import_core$2.getIDToken(audience);
-			} })
+			data: webIdentityToken
 		};
 	} catch (error) {
 		return {
@@ -137,6 +143,7 @@ function getOidcClient(params) {
 				RoleSessionName: roleSessionName,
 				Tags: tagArray
 			};
+			import_core$1.debug(`Assuming role with OIDC:\n${JSON.stringify(commandInput, null, 2)}`);
 			const assumeRoleResponse = await stsClient.send(new import_dist_cjs$1.AssumeRoleWithWebIdentityCommand({
 				...commandInput,
 				WebIdentityToken: webIdentityToken
@@ -184,6 +191,11 @@ async function getCredentials(params) {
 }
 async function getSecretValue(params) {
 	const { credentials, region, profile, secretName } = params;
+	if (!credentials.AccessKeyId || !credentials.SecretAccessKey || !credentials.SessionToken) return {
+		hasFailed: true,
+		errorCode: "credentials_are_not_valid",
+		errorMessage: "Credentials are not valid"
+	};
 	const secretManagerClient = new import_dist_cjs.SecretsManager({
 		region,
 		profile,

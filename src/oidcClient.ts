@@ -74,6 +74,9 @@ export function getOidcClient(params: {
 				Tags: tagArray,
 			};
 
+			core.debug(
+				`Assuming role with OIDC:\n${JSON.stringify(commandInput, null, 2)}`,
+			);
 			const assumeRoleResponse = await stsClient.send(
 				new AssumeRoleWithWebIdentityCommand({
 					...commandInput,
