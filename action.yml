@@ -9,16 +9,19 @@ branding:
 
 # Define your inputs here.
 inputs:
-  secret_name:
+  aws_secret_name:
     description: The name of the secret in AWS Secrets Manager
     required: true
-  region:
+  aws_region:
     description: The AWS region
     required: true
     default: eu-west-1
-  profile:
+  aws_profile:
     description: The AWS profile
     required: false
+  aws_role_arn:
+    description: The AWS role ARN
+    required: true
 
 # Define your outputs here.
 outputs:
