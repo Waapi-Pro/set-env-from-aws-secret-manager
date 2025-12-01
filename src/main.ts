@@ -44,6 +44,18 @@ async function getSecretValue(params: {
 }): Promise<CustomResponse<Record<string, string>, string>> {
 	const { credentials, region, profile, secretName } = params;
 
+	if (
+		!credentials.AccessKeyId ||
+		!credentials.SecretAccessKey ||
+		!credentials.SessionToken
+	) {
+		return {
+			hasFailed: true,
+			errorCode: "credentials_are_not_valid",
+			errorMessage: "Credentials are not valid",
+		};
+	}
+
 	const secretManagerClient = new SecretsManager({
 		region,
 		profile,

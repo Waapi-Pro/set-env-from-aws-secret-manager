@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
+import type { CustomResponse } from "../types/CustomResponse";
 import { getErrorMessage } from "./getErrorMessage";
 import { retryUntil } from "./retryUntil";
-import type { CustomResponse } from "../types/CustomResponse";
 
 export async function getWebIdentityToken(params?: {
 	audience?: string;
@@ -9,11 +9,20 @@ export async function getWebIdentityToken(params?: {
 	const { audience } = params ?? {};
 
 	try {
+		core.debug(`Getting web identity token for audience: ${audience}`);
 		const webIdentityToken = await retryUntil({
 			fn: async () => {
 				return await core.getIDToken(audience);
 			},
 		});
+
+		if (!webIdentityToken) {
+			return {
+				hasFailed: true,
+				errorCode: "web_identity_token_is_empty",
+				errorMessage: `getIDToken call returned: ${webIdentityToken}`,
+			};
+		}
 
 		return {
 			hasFailed: false,

@@ -8,15 +8,8 @@ export async function retryUntil<Fn extends () => any>(params: {
 		maxDelay?: number;
 	};
 }): Promise<Awaited<ReturnType<Fn>>> {
-	const {
-		fn,
-		maxRetries = 3,
-		backOff = {
-			initialDelay: 1000,
-			maxDelay: 10000,
-		},
-	} = params;
-	const { initialDelay, maxDelay } = backOff;
+	const { fn, maxRetries = 3, backOff } = params;
+	const { initialDelay = 1000, maxDelay = 10000 } = backOff ?? {};
 
 	let remainingRetries = maxRetries;
 	let nextDelay = initialDelay;
@@ -34,4 +27,7 @@ export async function retryUntil<Fn extends () => any>(params: {
 			nextDelay = Math.min(nextDelay * 2, maxDelay);
 		}
 	} while (remainingRetries > 0);
+
+	// this should never happen
+	throw new Error("RetryUntil: No retries left");
 }
