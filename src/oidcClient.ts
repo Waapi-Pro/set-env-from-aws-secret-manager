@@ -1,18 +1,18 @@
 import * as core from "@actions/core";
 import {
-	AssumeRoleWithWebIdentityCommand,
-	STS,
 	type AssumeRoleCommandInput,
 	type Credentials,
-	type Tag,
+	AssumeRoleWithWebIdentityCommand,
+	STS,
 } from "@aws-sdk/client-sts";
+import {
+	DEFAULT_ROLE_DURATION_SECONDS,
+	DEFAULT_ROLE_SESSION_NAME,
+} from "./constants";
 import { getErrorMessage } from "./helpers/getErrorMessage";
-import { getGithubEnvironment } from "./helpers/getGithubEnvironment";
 import type { CustomResponse } from "./types/CustomResponse";
 
 const USER_AGENT = "github-actions/set-env-from-aws-secret-manager" as const;
-const DEFAULT_ROLE_DURATION_SECONDS = 3600 as const;
-const DEFAULT_ROLE_SESSION_NAME = "GitHubActions" as const;
 
 function isRoleArn(roleArn: string) {
 	return roleArn.startsWith("arn:aws");
@@ -93,7 +93,14 @@ export function getOidcClient(params: {
 		}
 	}
 
-	stsClient.config.credentials;
+	return {
+		assumeRoleWithWebIdentity,
+		get credentials() {
+			return stsClient.config.credentials().catch((error) => {
+				core.error(getErrorMessage(error));
 
-	return { assumeRoleWithWebIdentity };
+				return null;
+			});
+		},
+	};
 }

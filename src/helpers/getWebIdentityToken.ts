@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import { DEFAULT_GITHUB_TOKEN_AUDIENCE } from "../constants";
 import type { CustomResponse } from "../types/CustomResponse";
 import { getErrorMessage } from "./getErrorMessage";
 import { retryUntil } from "./retryUntil";
@@ -6,7 +7,7 @@ import { retryUntil } from "./retryUntil";
 export async function getWebIdentityToken(params?: {
 	audience?: string;
 }): Promise<CustomResponse<string, string>> {
-	const { audience } = params ?? {};
+	const { audience = DEFAULT_GITHUB_TOKEN_AUDIENCE } = params ?? {};
 
 	try {
 		core.info(`Getting web identity token for audience: ${audience}`);

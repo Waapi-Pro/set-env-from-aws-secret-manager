@@ -4,6 +4,7 @@ import {
 	SecretsManager,
 } from "@aws-sdk/client-secrets-manager";
 import type { Credentials } from "@aws-sdk/client-sts";
+import { ACTION_INPUT_KEY, DEFAULT_GITHUB_TOKEN_AUDIENCE } from "./constants";
 import { getErrorMessage } from "./helpers/getErrorMessage";
 import { getWebIdentityToken } from "./helpers/getWebIdentityToken";
 import { getOidcClient } from "./oidcClient";
@@ -141,26 +142,27 @@ async function getSecretValue(params: {
 }
 
 export async function run(): Promise<void> {
-	const secretName = core.getInput("aws_secret_name", {
+	const secretName = core.getInput(ACTION_INPUT_KEY.aws_secret_name, {
 		required: true,
 		trimWhitespace: true,
 	});
-	const roleArn = core.getInput("aws_role_arn", {
+	const roleArn = core.getInput(ACTION_INPUT_KEY.aws_role_arn, {
 		required: true,
 		trimWhitespace: true,
 	});
-	const region = core.getInput("aws_region", {
+	const region = core.getInput(ACTION_INPUT_KEY.aws_region, {
 		required: true,
 		trimWhitespace: true,
 	});
-	const profile = core.getInput("aws_profile", {
+	const profile = core.getInput(ACTION_INPUT_KEY.aws_profile, {
 		required: false,
 		trimWhitespace: true,
 	});
-	const githubTokenAudience = core.getInput("github_token_audience", {
-		required: false,
-		trimWhitespace: true,
-	});
+	const githubTokenAudience =
+		core.getInput(ACTION_INPUT_KEY.github_token_audience, {
+			required: false,
+			trimWhitespace: true,
+		}) ?? DEFAULT_GITHUB_TOKEN_AUDIENCE;
 
 	const getWebIdentityTokenResponse = await getWebIdentityToken(
 		githubTokenAudience
